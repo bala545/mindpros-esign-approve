@@ -7,6 +7,7 @@ class AuthService {
     const loginEndpoint = 'login';
     return await HttpService.post(loginEndpoint, payload);
   };
+  
 
   register = async (credentials) => {
     const registerEndpoint = 'register';
@@ -37,6 +38,18 @@ class AuthService {
     const updateProfile = "me";
     return await HttpService.patch(updateProfile, newInfo);
   }
+
+
+ 
+
+  logout() {
+    localStorage.removeItem('user');
+  }
+
+  getCurrentUser() {
+    return JSON.parse(localStorage.getItem('user'));
+  }
+
 }
 
 export default new AuthService();

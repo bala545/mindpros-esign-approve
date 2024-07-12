@@ -1,57 +1,48 @@
-import { useState, useEffect, useMemo, useContext } from "react";
-
-// react-router components
+import React, { useState, useEffect, useContext } from "react";
 import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
-
-// @mui material components
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Icon from "@mui/material/Icon";
-
-// Material Dashboard 2 React components
 import MDBox from "components/MDBox";
-
-// Material Dashboard 2 React example components
 import Sidenav from "examples/Sidenav";
 import Configurator from "examples/Configurator";
-
-// Material Dashboard 2 React themes
 import theme from "assets/theme";
 import themeRTL from "assets/theme/theme-rtl";
-
-// Material Dashboard 2 React Dark Mode themes
 import themeDark from "assets/theme-dark";
 import themeDarkRTL from "assets/theme-dark/theme-rtl";
-
-// RTL plugins
-import rtlPlugin from "stylis-plugin-rtl";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
-
-// Material Dashboard 2 React routes
 import routes from "routes";
-
-// Material Dashboard 2 React contexts
 import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
-
-// Images
 import brandWhite from "assets/images/logo-ct.png";
 import brandDark from "assets/images/logo-ct-dark.png";
-
 import { setupAxiosInterceptors } from "./services/interceptor";
 import ProtectedRoute from "examples/ProtectedRoute";
-import ForgotPassword from "auth/forgot-password";
-import ResetPassword from "auth/reset-password";
-import Login from "auth/login";
-import Register from "auth/register";
 import { AuthContext } from "context";
+import { Helmet } from "react-helmet";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+// Importing necessary components
+import Dashboard from "layouts/dashboard";
+import Tables from "layouts/tables";
+import Grids from "layouts/grid"; // Ensure Grids is imported here
+import Billing from "layouts/billing";
+import RTL from "layouts/rtl";
+import Notifications from "layouts/notifications";
+import Profile from "layouts/profile";
+import SignIn from "layouts/authentication/sign-in";
+import SignUp from "layouts/authentication/sign-up";
 import UserProfile from "layouts/user-profile";
 import UserManagement from "layouts/user-management";
-import { Helmet } from "react-helmet";
+import Login from "auth/login";
+import Register from "auth/register";
+import ForgotPassword from "auth/forgot-password";
+import ResetPassword from "auth/reset-password";
+import { useEvent } from "./useEvent";
+
 
 export default function App() {
   const authContext = useContext(AuthContext);
-
   const [controller, dispatch] = useMaterialUIController();
   const {
     miniSidenav,
@@ -64,26 +55,34 @@ export default function App() {
     darkMode,
   } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
-  const [rtlCache, setRtlCache] = useState(null);
-  const { pathname } = useLocation();
 
-  const [isDemo, setIsDemo] = useState(false);
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+
+
+  // const { events } = useEvent(); 
+  const [approvalQueueClicked, setApprovalQueueClicked] = useState(false);
+
+  const appAQ = () => {
+    setApprovalQueueClicked(true);
+  };
+  const appAQHide = () => {
+    setApprovalQueueClicked(false);
+  };
 
   useEffect(() => {
-    setIsDemo(process.env.REACT_APP_IS_DEMO === "true");
-  }, []);
+    document.body.setAttribute("dir", direction);
+  }, [direction]);
 
-  // Cache for the rtl
-  useMemo(() => {
-    const cacheRtl = createCache({
-      key: "rtl",
-      stylisPlugins: [rtlPlugin],
-    });
+  useEffect(() => {
+    document.documentElement.scrollTop = 0;
+    document.scrollingElement.scrollTop = 0;
+  }, [pathname]);
 
-    setRtlCache(cacheRtl);
-  }, []);
+  setupAxiosInterceptors(() => {
+    navigate("/dashboard");
+  });
 
-  // Open sidenav when mouse enter on mini sidenav
   const handleOnMouseEnter = () => {
     if (miniSidenav && !onMouseEnter) {
       setMiniSidenav(dispatch, false);
@@ -91,7 +90,6 @@ export default function App() {
     }
   };
 
-  // Close sidenav when mouse leave mini sidenav
   const handleOnMouseLeave = () => {
     if (onMouseEnter) {
       setMiniSidenav(dispatch, true);
@@ -99,26 +97,7 @@ export default function App() {
     }
   };
 
-  // Change the openConfigurator state
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
-
-  // if the token expired or other errors it logs out and goes to the login page
-  const navigate = useNavigate();
-  setupAxiosInterceptors(() => {
-    // authContext.logout();
-    navigate("/dashboard");
-  });
-
-  // Setting the dir attribute for the body element
-  useEffect(() => {
-    document.body.setAttribute("dir", direction);
-  }, [direction]);
-
-  // Setting page scroll to 0 when changing the route
-  useEffect(() => {
-    document.documentElement.scrollTop = 0;
-    document.scrollingElement.scrollTop = 0;
-  }, [pathname]);
 
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
@@ -142,6 +121,84 @@ export default function App() {
       }
       return null;
     });
+
+  const dynamicRoutes = [
+    approvalQueueClicked && {
+      type: "collapse",
+      name: "Approval Routes",
+      key: "tables",
+      icon: <Icon fontSize="small">table_view</Icon>,
+      route: "/tables",
+      component: <Tables />,
+    },
+    approvalQueueClicked && {
+      type: "collapse",
+      name: "Details",
+      key: "billing",
+      icon: <Icon fontSize="small">receipt_long</Icon>,
+      route: "/billing",
+      component: <Billing />,
+    },
+    approvalQueueClicked && {
+      type: "collapse",
+      name: "Activity History",
+      key: "rtl",
+      icon: <Icon fontSize="small">format_textdirection_r_to_l</Icon>,
+      route: "/rtl",
+      component: <RTL />,
+    },
+    approvalQueueClicked && {
+      type: "collapse",
+      name: "Notifications",
+      key: "notifications",
+      icon: <Icon fontSize="small">notifications</Icon>,
+      route: "/notifications",
+      component: <Notifications />,
+    },
+    {
+      type: "collapse",
+      name: "Profile",
+      key: "profile",
+      icon: <Icon fontSize="small">person</Icon>,
+      route: "/profile",
+      component: <Profile />,
+    },
+    {
+      type: "examples",
+      name: "User Profile",
+      key: "user-profile",
+      icon: <Icon fontSize="small">person</Icon>,
+      route: "/user-profile",
+      component: <UserProfile />,
+    },
+    {
+      type: "examples",
+      name: "User Management",
+      key: "user-management",
+      icon: <Icon fontSize="small">list</Icon>,
+      route: "/user-management",
+      component: <UserManagement />,
+    },
+  ].filter(Boolean);
+
+  const initialRoutes = [
+    {
+      type: "collapse",
+      name: "Dashboard",
+      key: "dashboard",
+      icon: <Icon fontSize="small">dashboard</Icon>,
+      route: "/dashboard",
+      component: <Dashboard onLoad={appAQHide}/>,
+    },
+    {
+      type: "collapse",
+      name: "Approval Queue",
+      key: "grids",
+      icon: <Icon fontSize="small">table_view</Icon>,
+      route: "/grids",
+      component: <Grids onLoad={appAQHide} appAQ={appAQ} />,
+    },
+  ];
 
   const configsButton = (
     <MDBox
@@ -169,66 +226,8 @@ export default function App() {
 
   return (
     <>
-      {isDemo && (
-        <Helmet>
-          <meta
-            name="keywords"
-            content="creative tim, updivision, material, node.js json:api, html dashboard, node.js, react, api admin, react node.js, html css dashboard node.js, material dashboard node.js, node.js api, react material dashboard, material admin, react dashboard, react admin, web dashboard, bootstrap 5 dashboard node.js, bootstrap 5, css3 dashboard, bootstrap 5 admin node.js, material dashboard bootstrap 5 node.js, frontend, api dashboard, responsive bootstrap 5 dashboard, api, material dashboard, material node.js bootstrap 5 dashboard, json:api"
-          />
-          <meta
-            name="description"
-            content="A free full stack app powered by MUI component library, React and Node.js API, featuring dozens of handcrafted UI elements"
-          />
-          <meta
-            itemProp="name"
-            content="Material Dashboard 2 React Node.js by Creative Tim & UPDIVISION"
-          />
-          <meta
-            itemProp="description"
-            content="A free full stack app powered by MUI component library, React and Node.js API, featuring dozens of handcrafted UI elements"
-          />
-          <meta
-            itemProp="image"
-            content="https://s3.amazonaws.com/creativetim_bucket/products/157/original/react-material-dashboard-nodejs.jpg?1664786816"
-          />
-          <meta name="twitter:card" content="product" />
-          <meta name="twitter:site" content="@creativetim" />
-          <meta
-            name="twitter:title"
-            content="Material Dashboard 2 React Node.js by Creative Tim & UPDIVISION"
-          />
-          <meta
-            name="twitter:description"
-            content="A free full stack app powered by MUI component library, React and Node.js API, featuring dozens of handcrafted UI elements"
-          />
-          <meta name="twitter:creator" content="@creativetim" />
-          <meta
-            name="twitter:image"
-            content="https://s3.amazonaws.com/creativetim_bucket/products/157/original/react-material-dashboard-nodejs.jpg?1664786816"
-          />
-          <meta property="fb:app_id" content="655968634437471" />
-          <meta
-            property="og:title"
-            content="Material Dashboard 2 React Node.js by Creative Tim & UPDIVISION"
-          />
-          <meta property="og:type" content="article" />
-          <meta
-            property="og:url"
-            content="https://www.creative-tim.com/live/react-material-dashboard-node.js/"
-          />
-          <meta
-            property="og:image"
-            content="https://s3.amazonaws.com/creativetim_bucket/products/157/original/react-material-dashboard-nodejs.jpg?1664786816"
-          />
-          <meta
-            property="og:description"
-            content="A free full stack app powered by MUI component library, React and Node.js API, featuring dozens of handcrafted UI elements"
-          />
-          <meta property="og:site_name" content="Creative Tim" />
-        </Helmet>
-      )}
       {direction === "rtl" ? (
-        <CacheProvider value={rtlCache}>
+        <CacheProvider>
           <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
             <CssBaseline />
             {layout === "dashboard" && (
@@ -237,7 +236,7 @@ export default function App() {
                   color={sidenavColor}
                   brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
                   brandName="Material Dashboard 2"
-                  routes={routes}
+                  routes={[...initialRoutes, ...dynamicRoutes]}
                   onMouseEnter={handleOnMouseEnter}
                   onMouseLeave={handleOnMouseLeave}
                 />
@@ -247,12 +246,9 @@ export default function App() {
             )}
             {layout === "vr" && <Configurator />}
             <Routes>
-              {/* <Route path="login" element={<Navigate to="/auth/login" />} />
-              <Route path="register" element={<Navigate to="/auth/register" />} />
-              <Route path="forgot-password" element={<Navigate to="/auth/forgot-password" />} /> */}
-              {getRoutes(routes)}
-              <Route path="login" element={<Navigate to="/dashboard" />} />
-              {/* <Route path="*" element={<Navigate to="/dashboard" />} /> */}
+              {getRoutes(initialRoutes)}
+              {getRoutes(dynamicRoutes)}
+              <Route path="*" element={<Navigate to="/dashboard" />} />
             </Routes>
           </ThemeProvider>
         </CacheProvider>
@@ -264,8 +260,8 @@ export default function App() {
               <Sidenav
                 color={sidenavColor}
                 brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-                brandName="Mind Pros eSign"
-                routes={routes}
+                brandName="eSign"
+                routes={[...initialRoutes, ...dynamicRoutes]}
                 onMouseEnter={handleOnMouseEnter}
                 onMouseLeave={handleOnMouseLeave}
               />
@@ -275,31 +271,8 @@ export default function App() {
           )}
           {layout === "vr" && <Configurator />}
           <Routes>
-            {/* <Route path="/auth/login" element={<Login />} />
-            <Route path="/auth/register" element={<Register />} />
-            <Route path="/auth/forgot-password" element={<ForgotPassword />} />
-            <Route path="/auth/reset-password" element={<ResetPassword />} /> */}
-            <Route
-              exact
-              path="user-profile"
-              element={
-                <ProtectedRoute isAuthenticated={authContext.isAuthenticated}>
-                  <UserProfile />
-                </ProtectedRoute>
-              }
-              key="user-profile"
-            />
-            {/* <Route
-              exact
-              path="user-management"
-              element={
-                <ProtectedRoute isAuthenticated={authContext.isAuthenticated}>
-                  <UserManagement />
-                </ProtectedRoute>
-              }
-              key="user-management"
-            /> */}
-            {getRoutes(routes)}
+            {getRoutes(initialRoutes)}
+            {getRoutes(dynamicRoutes)}
             <Route path="*" element={<Navigate to="/dashboard" />} />
           </Routes>
         </ThemeProvider>

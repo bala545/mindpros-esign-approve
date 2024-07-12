@@ -1,17 +1,4 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.1.0
-=========================================================
 
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
 
 // react-routers components
 import { Link } from "react-router-dom";
@@ -57,11 +44,16 @@ function ProfileInfoCard({ title, description, info, social, action, shadow }) {
   // Render the card info items
   const renderItems = labels.map((label, key) => (
     <MDBox key={label} display="flex" py={1} pr={2}>
-      <MDTypography variant="button" fontWeight="bold" textTransform="capitalize">
-        {label}: &nbsp;
+      <MDTypography
+        variant="button"
+        fontWeight="bold"
+        textTransform="capitalize"
+        style={{ marginRight: '0.5rem' }}  // Adjust the value as needed
+      >
+        {label}:
       </MDTypography>
       <MDTypography variant="button" fontWeight="regular" color="text">
-        &nbsp;{values[key]}
+        {values[key]}
       </MDTypography>
     </MDBox>
   ));

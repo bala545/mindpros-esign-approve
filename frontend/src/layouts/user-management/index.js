@@ -25,11 +25,7 @@ const UserManagement = () => {
       <DashboardNavbar />
       <MDAlert mt={2} color="dark">
         <MDTypography variant="body2" color="white" fontWeight="medium">
-          This is a PRO feature. Click
-          <a href="https://www.creative-tim.com/product/material-dashboard-pro-react-nodejs" target="_blank" style={{color: '#1A73E8'}}>
-            &nbsp;here&nbsp;
-          </a>
-          to see the PRO version
+      Profiles
         </MDTypography>
       </MDAlert>
       <MDBox pt={6} pb={3}>

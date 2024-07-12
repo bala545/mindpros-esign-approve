@@ -1,5 +1,5 @@
 
-// @mui material components
+import React, { useEffect } from 'react';
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 
@@ -15,8 +15,15 @@ import DataGrid from "examples/Grid/DataTable";
 
 
 
-function Grids() {
-
+function Grids({onLoad,appAQ}) {
+  useEffect(() => {
+    if (onLoad) {
+      onLoad();
+    }
+  }, [onLoad]);
+  const handleChildAQ = () => {
+   appAQ();
+  };
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -40,7 +47,7 @@ function Grids() {
                 </MDTypography>
               </MDBox>
               <MDBox pt={3}>
-                <DataGrid
+                <DataGrid onParentAQ={handleChildAQ}
                 />
               </MDBox>
             </Card>

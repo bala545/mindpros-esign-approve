@@ -1,10 +1,10 @@
-import React, { useCallback, useMemo, useState, useRef } from 'react';
+import React, { useCallback, useMemo, useState, useRef,useEffect } from 'react';
 import { getData } from './data';
 import customerPopup from './customerPopup.js';
 import vehiclePopup from './vehiclePopup.js';
 import StatusTooltip from './tooltipStatus.js';
-import "@ag-grid-community/styles/ag-grid.css"; // Core CSS
-import "@ag-grid-community/styles/ag-theme-alpine.css"; // Theme
+// import "@ag-grid-community/styles/ag-grid.css"; // Core CSS
+// import "@ag-grid-community/styles/ag-theme-alpine.css"; // Theme
 import ActionCellRenderer from './ActionCellRenderer';
 import './style.css';
 import { AgGridReact } from '@ag-grid-community/react'; // React Grid Logic
@@ -18,6 +18,15 @@ import { RangeSelectionModule } from "@ag-grid-enterprise/range-selection";
 import { GridChartsModule } from "@ag-grid-enterprise/charts-enterprise";
 import { SetFilterModule } from "@ag-grid-enterprise/set-filter";
 import { SideBarModule } from "@ag-grid-enterprise/side-bar";
+import { useNavigate } from 'react-router-dom';
+import CustomHeader from './CustomHeader';
+import CustomButtonComponent from "./customButtonComponent.js";
+import '@ag-grid-community/styles/ag-grid.css'; // Core CSS
+import '@ag-grid-community/styles/ag-theme-quartz.css';
+import { Button } from '@mui/base/Button';
+import { debounce } from 'lodash';
+import { useEvent } from '../../../useEvent';
+// import { isApprovalQueueClicked } from '../../../App';
 
 ModuleRegistry.registerModules([
     ClientSideRowModelModule,
@@ -42,30 +51,52 @@ const AllStatus = (params) => {
     );
 };
 
-const DataGrid = () => {
+
+
+const DataGrid = ({onParentAQ}) => {
+
+    const navigate = useNavigate();
     const gridRef = useRef();
     const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
-    const data = useMemo(() => getData(), []);
-    const [rowData] = useState(data, []);
+    const [rowData, setRowData] = useState([]);
+    const data = useMemo(() => getData(), []); 
+    useEffect(() => {
+        setRowData(data);
+    }, [data]);
+    const handleAQRow = () => {
+        onParentAQ();
+    };
+    const onGridReady = params => {
+        window.addEventListener('resize', debounce(() => {
+            try {
+                params.api.sizeColumnsToFit();
+            } catch (error) {
+                console.error('ResizeObserver error:', error);
+            }
+        }, 200));
+    };
     const paginationPageSize = 20; // Set this to a value in the paginationPageSizeSelector array
     const paginationPageSizeSelector = [5, 10, 20]; // Define the page size options
     const defaultColDef = {
         flex: 1,
         minWidth: 100,
-        filter: false,
+        filter: 'agTextColumnFilter',
         resizable: true,
+        filter:true,
         sortable: true,
         enableValue: false,
         enableRowGroup: true,
-        enablePivot: true
+        enablePivot: true,
+        floatingFilter: true,
+        headerComponentFramework: CustomHeader, // Use custom header component
     };
 
     let columnApi;
 
-    const onGridReady = (params) => {
-        columnApi = params.columnApi;
-        gridRef.current.api.expandAll();
-    };
+    // const onGridReady = (params) => {
+    //     columnApi = params.columnApi;
+    //     gridRef.current.api.expandAll();
+    // };
 
     const gridOptions = {
         defaultColDef: defaultColDef,
@@ -131,7 +162,7 @@ const DataGrid = () => {
             },
             { field: 'Project', 
                 headerName: 'Project', 
-                filter: 'agSetColumnFilter',
+                filter: 'agTextColumnFilter',
                 menuTabs: ['filterMenuTab'],
                 valueParser: 'Project',
                 cellRenderer: AllStatus, 
@@ -163,6 +194,7 @@ const DataGrid = () => {
             },
             { field: 'Record Type', 
                 headerName: 'Record Type',
+                filter: 'agTextColumnFilter',
                 flex: 1,
                 suppressHeaderFilterButton: true 
             },
@@ -182,10 +214,12 @@ const DataGrid = () => {
                         rowNodes: [params.node],
                         columns: [params.column],
                     });
-                    if (cellRendererInstances.length > 0) {
-                        const instance = cellRendererInstances[0];
-                        instance.togglePopup();
-                    }
+                    // if (cellRendererInstances.length > 0) {
+                    //     const instance = cellRendererInstances[0];
+                    //     instance.togglePopup();
+                    // }
+                    handleAQRow();
+                    navigate('/billing',{ state: { rowData: params.data } });
                     }
                 },
             },
@@ -207,7 +241,7 @@ const DataGrid = () => {
                 field: '',
                 headerName: 'Actions',
                 resizable: false,
-                cellRenderer: 'actionCellRenderer',
+                cellRenderer: CustomButtonComponent,
                 flex: 1,
                 cellStyle: { 
                     display: 'flex', 
@@ -220,7 +254,6 @@ const DataGrid = () => {
             }
         ];
     };
-
     const [columnDefs, setColumnDefs] = useState(createROColDefs());
 
     const onFilterTextBoxChanged = useCallback(() => {
@@ -337,29 +370,32 @@ const DataGrid = () => {
     return (
         <div style={containerStyle}>
             <div className="example-wrapper">
-                <div>
-                    <div className="button-group">
-                        <select onChange={e => changeView(e.target.value)}>
-                            <option value="Repair Orders">Repair Orders</option>
-                            <option value="Counter Person  View">Parts Counter</option>
-                            <option value="Cashier View">Cashier View</option>
-                            <option value="Appt View">Appointment View</option>
-                        </select>
-                        <select onChange={e => changeView(e.target.value)}>
-                            <option value="All ROs">All Repair Orders</option>
-                            <option value="Not Dispatched">Not Dispatched</option>
-                            <option value="My Customer Pay ROs">My Customer Pay ROs</option>
-                        </select>
-                        <button onClick={clearFilters}>Reset Filters</button>
-                        <input
-                            type="text"
-                            id="filter-text-box"
-                            placeholder="Search"
-                            onInput={onFilterTextBoxChanged}
-                        />
-                    </div>
+                <div className="button-group" style={{ display: 'flex', alignItems: 'center',padding:'1rem' }}>
+                    <select
+                        onChange={(e) => changeView(e.target.value)}
+                        style={{ marginRight: '10px',borderRadius: '5px', border: '1px solid #ccc' }}
+                    >
+                        <option value="Repair Orders">Pending</option>
+                        <option value="Counter Person View">Approval</option>
+                        <option value="Cashier View">Incomplete</option>
+                        <option value="Appt View">Reject</option>
+                    </select>
+                
+                    <Button onClick={clearFilters}
+                        style={{
+                          
+                            borderRadius: '5px',
+                            border: 'none',
+                            backgroundColor: '#007bff',
+                            color: '#fff',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            textAlign: 'center',
+                            justifyContent: 'center',
+                        }}>Reset Filters</Button>
+               
                 </div>
-                <div className="ag-theme-alpine" style={{ height: 800 }}>
+                <div className="ag-theme-quartz" style={{ height: 800 }}>
                     <AgGridReact
                         ref={gridRef}
                         rowData={rowData}

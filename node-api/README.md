@@ -1,13 +1,9 @@
-# [Headless CMS with ExpressJS API FREE]((https://headless-cms-with-express-js-api.creative-tim.com/?ref=hceja-readme))
-
-![version](https://img.shields.io/badge/version-1.0.0-blue.svg) [![GitHub issues open](https://img.shields.io/github/issues/creativetimofficial/ct-headless-cms-with-laravel-json-api.svg?maxAge=2592000)](https://github.com/creativetimofficial/ct-headless-cms-with-laravel-json-api/issues?q=is%3Aopen+is%3Aissue) [![GitHub issues closed](https://img.shields.io/github/issues-closed-raw/creativetimofficial/ct-headless-cms-with-laravel-json-api/ct-headless-cms-with-laravel-json-api.svg?maxAge=2592000)](https://github.com/creativetimofficial/ct-headless-cms-with-laravel-json-api/issues?q=is%3Aissue+is%3Aclosed)
-
-![Product Image](https://s3.amazonaws.com/creativetim_bucket/products/690/original/headlesscms-expressjs-pro.jpg?1664798078)
+![Product Image](https://s3.amazonaws.com/MindPROS_bucket/products/690/original/headlesscms-expressjs-pro.jpg?1664798078)
 
 Headless CMS with ExpressJS API Free is a backend built with the most popular Node.js framework.
 
 # Download
-Download the .zip file from the Creative Tim site and extract it. what is the link?
+Download the .zip file from the MindPROS site and extract it. what is the link?
 
 # Node API Setup
 
@@ -71,8 +67,8 @@ Node API offers endpoints for common CRUD functionalities:
 
 ## Versions
 
-[<img src="https://github.com/creativetimofficial/public-assets/blob/master/logos/laravel_logo.png" height="80" />](#)
-[<img src="https://github.com/creativetimofficial/public-assets/blob/master/logos/nodejs-logo.jpg" height="75" />](#)
+[<img src="https://github.com/MindPROSofficial/public-assets/blob/master/logos/laravel_logo.png" height="80" />](#)
+[<img src="https://github.com/MindPROSofficial/public-assets/blob/master/logos/nodejs-logo.jpg" height="75" />](#)
 
 ## Documentation
 The documentation for the Node API is hosted at our [here](https://documenter.getpostman.com/view/8138626/Uze1virp).
@@ -80,54 +76,54 @@ The documentation for the Node API is hosted at our [here](https://documenter.ge
 ## Resources
 - Download Page: <https://>
 - Documentation: <https://documenter.getpostman.com/view/8138626/Uze1virp>
-- License Agreement: <https://www.creative-tim.com/license>
-- Support: <https://www.creative-tim.com/contact-us>
+- License Agreement: <https://www.MindPROS-.com/license>
+- Support: <https://www.MindPROS-.com/contact-us>
 - Issues: [Github Issues Page](https://)
 
 ## Dashboards built with Node API
 | Material Dashboard 2 React|
 | --- |
-| [![Material Dashboard 2 React Node JS](https://s3.amazonaws.com/creativetim_bucket/products/689/original/react-material-dashboard-pro-nodejs.jpg?1664790326)](https://material-dashboard-react-node.creative-tim.com/auth/login?ref=hceja-readme)
+| [![Material Dashboard 2 React Node JS](https://s3.amazonaws.com/MindPROS_bucket/products/689/original/react-material-dashboard-pro-nodejs.jpg?1664790326)](https://material-dashboard-react-node.MindPROS-.com/auth/login?ref=hceja-readme)
 
 
 ## Reporting Issues
 
 We use GitHub Issues as the official bug tracker for the Node API PRO. Here are some advices for our users that want to report an issue:
 
-1. Make sure that you are using the latest version of the Node API PRO. Check the CHANGELOG from your dashboard on our [website](https://www.creative-tim.com/?ref=hceja-readme).
-2. Providing us reproducible steps for the issue will shorten the time it takes for it to be fixed.
+1. Make sure that you are using the latest version of the Node API PRO. Check the CHANGELOG from your dashboard on our [website](https://www.MindPROS-.com/?ref=hceja-readme).
+2. Providing us reproducible steps for the issue will shorten the e it takes for it to be fixed.
 3. Some issues may be browser specific, so specifying in what browser you encountered the issue might help.
 
 ## Licensing
 
-- Copyright Creative Tim (https://www.creative-tim.com/?ref=hceja-readme)
-- Creative Tim License (https://www.creative-tim.com/license).
+- Copyright MindPROS (https://www.MindPROS-.com/?ref=hceja-readme)
+- MindPROS License (https://www.MindPROS-.com/license).
 
 
 ## Useful Links
 
 - [Tutorials](https://www.youtube.com/channel/UCVyTG4sCw-rOvB9oHkzZD1w)
-- [Affiliate Program](https://www.creative-tim.com/affiliates/new) (earn money)
-- [Blog Creative Tim](http://blog.creative-tim.com/)
-- [Free Products](https://www.creative-tim.com/bootstrap-themes/free) from Creative Tim
-- [Premium Products](https://www.creative-tim.com/bootstrap-themes/premium?ref=hceja-readme) from Creative Tim
-- [React Products](https://www.creative-tim.com/bootstrap-themes/react-themes?ref=hceja-readme) from Creative Tim
-- [Angular Products](https://www.creative-tim.com/bootstrap-themes/angular-themes?ref=hceja-readme) from Creative Tim
-- [VueJS Products](https://www.creative-tim.com/bootstrap-themes/vuejs-themes?ref=hceja-readme) from Creative Tim
-- [More products](https://www.creative-tim.com/bootstrap-themes?ref=hceja-readme) from Creative Tim
-- Check our Bundles [here](https://www.creative-tim.com/bundles??ref=hceja-readme)
+- [Affiliate Program](https://www.MindPROS-.com/affiliates/new) (earn money)
+- [Blog MindPROS](http://blog.MindPROS-.com/)
+- [Free Products](https://www.MindPROS-.com/bootstrap-themes/free) from MindPROS
+- [Premium Products](https://www.MindPROS-.com/bootstrap-themes/premium?ref=hceja-readme) from MindPROS
+- [React Products](https://www.MindPROS-.com/bootstrap-themes/react-themes?ref=hceja-readme) from MindPROS
+- [Angular Products](https://www.MindPROS-.com/bootstrap-themes/angular-themes?ref=hceja-readme) from MindPROS
+- [VueJS Products](https://www.MindPROS-.com/bootstrap-themes/vuejs-themes?ref=hceja-readme) from MindPROS
+- [More products](https://www.MindPROS-.com/bootstrap-themes?ref=hceja-readme) from MindPROS
+- Check our Bundles [here](https://www.MindPROS-.com/bundles??ref=hceja-readme)
 
 ## Social Media
 
-### Creative Tim:
+### MindPROS:
 
-Twitter: <https://twitter.com/CreativeTim?ref=hceja-readme>
+Twitter: <https://twitter.com/MindPROS?ref=hceja-readme>
 
-Facebook: <https://www.facebook.com/CreativeTim?ref=hceja-readme>
+Facebook: <https://www.facebook.com/MindPROS?ref=hceja-readme>
 
-Dribbble: <https://dribbble.com/creativetim?ref=hceja-readme>
+Dribbble: <https://dribbble.com/MindPROS?ref=hceja-readme>
 
-Instagram: <https://www.instagram.com/CreativeTimOfficial?ref=hceja-readme>
+Instagram: <https://www.instagram.com/MindPROSOfficial?ref=hceja-readme>
 
 
 ### Updivision:
@@ -142,5 +138,5 @@ Updivision Blog: <https://updivision.com/blog/?ref=hceja-readme>
 
 ## Credits
 
-- [Creative Tim](https://creative-tim.com/?ref=hceja-readme)
+- [MindPROS](https://MindPROS-.com/?ref=hceja-readme)
 - [UPDIVISION](https://updivision.com)

@@ -1,19 +1,6 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.1.0
-=========================================================
 
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
 
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-// @mui material components
+import React, { useEffect } from 'react';
 import Grid from "@mui/material/Grid";
 
 // Material Dashboard 2 React components
@@ -35,8 +22,14 @@ import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
 import Projects from "layouts/dashboard/components/Projects";
 import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
 
-function Dashboard() {
+function Dashboard({onLoad}) {
   const { sales, tasks } = reportsLineChartData;
+
+  useEffect(() => {
+    if(onLoad){
+       onLoad(); 
+    }
+  },[onLoad]);
 
   return (
     <DashboardLayout>
@@ -48,7 +41,7 @@ function Dashboard() {
               <ComplexStatisticsCard
                 color="dark"
                 icon="weekend"
-                title="Bookings"
+                title="Approval Queue"
                 count={281}
                 percentage={{
                   color: "success",
@@ -77,7 +70,7 @@ function Dashboard() {
               <ComplexStatisticsCard
                 color="success"
                 icon="store"
-                title="Revenue"
+                title="Records"
                 count="34k"
                 percentage={{
                   color: "success",
@@ -120,7 +113,7 @@ function Dashboard() {
               <MDBox mb={3}>
                 <ReportsLineChart
                   color="success"
-                  title="daily sales"
+                  title="Pending Tasks"
                   description={
                     <>
                       (<strong>+15%</strong>) increase in today sales.

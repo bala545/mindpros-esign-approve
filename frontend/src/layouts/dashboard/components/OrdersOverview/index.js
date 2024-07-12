@@ -1,17 +1,4 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.1.0
-=========================================================
 
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -54,7 +41,7 @@ function OrdersOverview() {
         <TimelineItem
           color="error"
           icon="inventory_2"
-          title="New order #1832412"
+          title="Pending with Approval Manager"
           dateTime="21 DEC 11 PM"
         />
         <TimelineItem
@@ -66,13 +53,13 @@ function OrdersOverview() {
         <TimelineItem
           color="warning"
           icon="payment"
-          title="New card added for order #4395133"
+          title="Pending"
           dateTime="20 DEC 2:20 AM"
         />
         <TimelineItem
           color="primary"
           icon="vpn_key"
-          title="New card added for order #4395133"
+          title="Approval is in Progress"
           dateTime="18 DEC 4:54 AM"
           lastItem
         />

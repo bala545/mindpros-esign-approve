@@ -1,87 +1,336 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-// @mui material components
+import React, { useCallback, useMemo, useState, useRef,useEffect } from 'react';
 import Grid from "@mui/material/Grid";
-
-// Material Dashboard 2 React components
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import Typography from "@mui/material/Typography";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MDBox from "components/MDBox";
-
-// Material Dashboard 2 React examples
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
-import MasterCard from "examples/Cards/MasterCard";
-import DefaultInfoCard from "examples/Cards/InfoCards/DefaultInfoCard";
-
-// Billing page components
-import PaymentMethod from "layouts/billing/components/PaymentMethod";
-import Invoices from "layouts/billing/components/Invoices";
-import BillingInformation from "layouts/billing/components/BillingInformation";
-import Transactions from "layouts/billing/components/Transactions";
+import Card from "@mui/material/Card";
+import AttachFileIcon from "@mui/icons-material/AttachFile";
+import approvalData from "layouts/user-management/approvalData";
+import stepsData from "layouts/user-management/stepsData";
+import DataTable from "examples/Tables/DataTable";
+import MDTypography from "components/MDTypography";
+import { useLocation } from 'react-router-dom';
+import { Button } from '@mui/base/Button';
+import { useTheme } from '@mui/material/styles';
+import DrawIcon from '@mui/icons-material/Draw';
+import CancelIcon from '@mui/icons-material/Cancel';
+import IconButton from '@mui/material/IconButton';
+import ApproveRejectDialog from '../../layouts/billing/components/ApproveReject'
 
 function Billing() {
+  const location = useLocation();
+  const { rowData } = location.state || {};
+  console.log(rowData);
+  const [openApprove, setOpenApprove] = useState(false);
+  const [openReject, setOpenReject] = useState(false);
+
+  const handleOpenApprove = () => {
+    setOpenApprove(true);
+  };
+
+  const handleCloseApprove = () => {
+    setOpenApprove(false);
+  };
+
+  const handleOpenReject = () => {
+    setOpenReject(true);
+  };
+
+  const handleCloseReject = () => {
+    setOpenReject(false);
+  };
+  const mindprosDetails = [
+    { label: "System", value: rowData?.System },
+    { label: "Item Type", value: "Bug" },
+    { label: "Record ID", value: rowData?.RecordId },
+    { label: "Record Type", value: rowData?.["Record Type"] ?? "" }, 
+    { label: "Revision", value: 1 },
+    { label: "Record Status", value: "Pending" },
+    { label: "Domain Name", value: rowData?.Domain }
+  ];
+  const qTestDetails = [
+    { label: "Status", value: "New" },
+    { label: "Type", value: "Manual" },
+    { label: "GxP", value: "Y" },
+    { label: "Category", value: "PQ" },
+    { label: "qTest Version ID", value: "60773587" },
+    { label: "Project ID", value: "115898" }
+  ];
+
+    // const [events, setEvents] = useState({
+    //   approvalQueueClicked: false,
+    //   // Add other events as needed
+    // });
+  
+    // // Simulate event triggering (replace with actual event logic)
+    // useEffect(() => {
+    //     setEvents((prevEvents) => ({
+    //       ...prevEvents,
+    //       approvalQueueClicked: true,
+    //     }));
+    // }, []);
+
+    const theme = useTheme();
+  const handleAttachmentClick = () => {
+
+    // Create a hidden file input element
+    const input = document.createElement("input");
+    input.type = "file";
+    input.style.display = "none";
+    input.onchange = (event) => {
+      const file = event.target.files[0];
+      console.log("Selected file:", file);
+      // Handle file selection (e.g., upload the file or process it)
+    };
+    document.body.appendChild(input);
+    input.click();
+    document.body.removeChild(input);
+  };
+
+  const { columns: approvalColumns, rows: approvalRows } = approvalData();
+  const { columns: stepsColumns, rows: stepsRows } = stepsData();
+
   return (
     <DashboardLayout>
       <DashboardNavbar absolute isMini />
-      <MDBox mt={8}>
-        <MDBox mb={3}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} lg={8}>
-              <Grid container spacing={3}>
-                <Grid item xs={12} xl={6}>
-                  <MasterCard number={4562112245947852} holder="jack peterson" expires="11/22" />
-                </Grid>
-                <Grid item xs={12} md={6} xl={3}>
-                  <DefaultInfoCard
-                    icon="account_balance"
-                    title="salary"
-                    description="Belong Interactive"
-                    value="+$2000"
-                  />
-                </Grid>
-                <Grid item xs={12} md={6} xl={3}>
-                  <DefaultInfoCard
-                    icon="paypal"
-                    title="paypal"
-                    description="Freelance Payment"
-                    value="$455.00"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <PaymentMethod />
-                </Grid>
-              </Grid>
-            </Grid>
-            <Grid item xs={12} lg={4}>
-              <Invoices />
-            </Grid>
+      <MDBox pt={10} pb={3}>
+        <Grid container spacing={6}>
+          <Grid item xs={12}>
+            <Card>
+              <MDBox
+                mx={2}
+                mt={-3}
+                py={3}
+                px={2}
+                variant="gradient"
+                bgColor="info"
+                borderRadius="lg"
+                coloredShadow="info"
+              >
+                <Typography variant="h6" color="white">
+                  Details
+                </Typography>
+              </MDBox>
+              <MDBox pt={3}>
+                <MDBox p={7}>
+                  <Accordion defaultExpanded>
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls="vera-details-content"
+                      id="vera-details-header"
+                    >
+                      <MDTypography variant="h6" fontWeight="medium" textTransform="capitalize"> MindPROS Details</MDTypography>
+                    </AccordionSummary>
+                    <>
+                      <AccordionDetails>
+                        <Grid container spacing={1}>
+                          {mindprosDetails.map((item, index) => (
+                            <Grid item xs={12} sm={4} key={index}>
+                              <MDBox display="flex">
+                                <MDTypography
+                                  variant="button"
+                                  fontWeight="bold"
+                                  textTransform="capitalize"
+                                  style={{ marginRight: '0.5rem' }}
+                                >
+                                  {item.label}:
+                                </MDTypography>
+                                <MDTypography variant="button" fontWeight="regular" color="text">
+                                  {item.value}
+                                </MDTypography>
+                              </MDBox>
+                            </Grid>
+                          ))}
+                        </Grid>
+                      </AccordionDetails>
+                    </>
+
+                  </Accordion>
+
+                  <Accordion defaultExpanded>
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls="qtest-details-content"
+                      id="qtest-details-header"
+                    >
+                      <MDTypography variant="h6" fontWeight="medium" textTransform="capitalize"> qTest Details</MDTypography>
+                    </AccordionSummary>
+                    <>
+                      <AccordionDetails>
+                        <Grid container spacing={1}>
+                          {qTestDetails.map((item, index) => (
+                            <Grid item xs={12} sm={4} key={index}>
+                              <MDBox display="flex">
+                                <MDTypography
+                                  variant="button"
+                                  fontWeight="bold"
+                                  textTransform="capitalize"
+                                  style={{ marginRight: '0.5rem' }}
+                                >
+                                  {item.label}:
+                                </MDTypography>
+                                <MDTypography variant="button" fontWeight="regular" color="text">
+                                  {item.value}
+                                </MDTypography>
+                              </MDBox>
+                            </Grid>
+                          ))}
+                        </Grid>
+                      </AccordionDetails>
+                      <Accordion defaultExpanded>
+                        <AccordionSummary
+                          expandIcon={<ExpandMoreIcon />}
+                          aria-controls="qtest-steps-content"
+                          id="qtest-steps-header"
+                        >
+                          <MDTypography variant="h6" fontWeight="medium" textTransform="capitalize"> Steps</MDTypography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                          <MDBox>
+                            <Grid container spacing={6}>
+                              <Grid item xs={12}>
+                                <Card>
+                                  <MDBox pt={1}>
+                                    <DataTable
+                                      table={{ columns: stepsColumns, rows: stepsRows }}
+                                      isSorted={false}
+                                      entriesPerPage={false}
+                                      showTotalEntries={false}
+                                      noEndBorder
+                                    />
+                                  </MDBox>
+                                </Card>
+                              </Grid>
+                            </Grid>
+                          </MDBox>
+                        </AccordionDetails>
+                      </Accordion>
+                    </>
+
+                  </Accordion>
+
+                  <Accordion defaultExpanded>
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls="approval-route-content"
+                      id="approval-route-header"
+                    >
+                      <MDTypography variant="h6" fontWeight="medium" textTransform="capitalize"> Approval Route</MDTypography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Grid container spacing={1}>
+
+                        <MDBox display="flex" style={{ marginLeft: '10px' }}>
+                          <MDTypography
+                            variant="button"
+                            fontWeight="bold"
+                            textTransform="capitalize"
+                            style={{ marginRight: '0.5rem' }}
+                          >
+                            Status :
+                          </MDTypography>
+                          <MDTypography variant="button" fontWeight="regular" color="text">
+                            in progress
+                          </MDTypography>
+                        </MDBox>
+                      </Grid>
+                      <Accordion defaultExpanded>
+                        <AccordionSummary
+                          expandIcon={<ExpandMoreIcon />}
+                          aria-controls="qtest-steps-content"
+                          id="qtest-steps-header"
+                        >
+                          <MDTypography variant="h6" fontWeight="medium" textTransform="capitalize"> Level1</MDTypography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                          <MDBox pt={1} pb={1}>
+                            <Grid container spacing={6}>
+                              <Grid item xs={12}>
+                                <Card>
+                                  <MDBox>
+                                    <DataTable
+                                      table={{ columns: approvalColumns, rows: approvalRows }}
+                                      isSorted={false}
+                                      entriesPerPage={false}
+                                      showTotalEntries={false}
+                                      noEndBorder
+                                    />
+                                  </MDBox>
+                                </Card>
+                              </Grid>
+                            </Grid>
+                          </MDBox>
+                        </AccordionDetails>
+                      </Accordion>
+                    </AccordionDetails>
+                  </Accordion>
+                </MDBox>
+              </MDBox>
+            </Card>
+            <MDBox
+  sx={{
+    position: 'fixed',
+    bottom: 0,
+    left: 0,
+    width: '100%',
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: '0 -2px 10px rgba(0, 0, 0, 0.1)',
+    padding: theme.spacing(2),
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    zIndex: 1000,
+  }}
+>
+  <MDTypography variant="h6" color="textPrimary" sx={{ fontSize: '19px',paddingLeft:'20rem' }}>
+    Argus System Owner Approval
+  </MDTypography>
+  <MDBox className="col-sm-3 p-2 approve-footer-buttons" sx={{ display: 'flex' }}>
+  <IconButton
+          size="large"
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
+          style={{ border: "1px solid lightgray", borderRadius: "12px",marginRight:"0.3rem" }}
+          onClick={handleOpenApprove}
+        >
+          <DrawIcon sx={{ color:'green' }}/> <Typography variant="button" sx={{ marginLeft: '8px',color:'green' }}>
+      Approve
+    </Typography>
+        </IconButton>
+        <IconButton
+          size="large"
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
+          style={{ border: "1px solid lightgray", borderRadius: "12px" }}
+          onClick={handleOpenReject}
+        >
+          <CancelIcon sx={{ color:'red' }}/> <Typography variant="button" sx={{ marginLeft: '8px',color:'red' }}>
+      Reject
+    </Typography>
+        </IconButton>
+  </MDBox>
+</MDBox>
+
           </Grid>
-        </MDBox>
-        <MDBox mb={3}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={7}>
-              <BillingInformation />
-            </Grid>
-            <Grid item xs={12} md={5}>
-              <Transactions />
-            </Grid>
-          </Grid>
-        </MDBox>
+        </Grid>
       </MDBox>
       <Footer />
+      <ApproveRejectDialog
+        openApprove={openApprove}
+        openReject={openReject}
+        handleCloseApprove={handleCloseApprove}
+        handleCloseReject={handleCloseReject}
+      />
     </DashboardLayout>
   );
 }

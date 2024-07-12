@@ -1,17 +1,4 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.1.0
-=========================================================
 
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
 
 /**
   This file is used for controlling the global states of the components,
@@ -30,7 +17,7 @@ const MaterialUI = createContext();
 // authentication context
 export const AuthContext = createContext({
   isAuthenticated: false,
-  // login: () => {},
+  login: () => {},
   register: () => {},
   logout: () => {},
 });
@@ -60,17 +47,18 @@ const AuthContextProvider = ({ children }) => {
   const login = (token) => {
     localStorage.setItem("token", token);
     setIsAuthenticated(true);
+    // navigate("/auth/login");
     navigate("/dashboard");
   };
 
   const logout = () => {
     localStorage.removeItem("token");
     setIsAuthenticated(false);
-    // navigate("/auth/login");
+    navigate("/auth/login");
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated:true, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

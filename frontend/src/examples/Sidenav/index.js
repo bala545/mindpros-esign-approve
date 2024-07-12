@@ -1,17 +1,4 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.1.0
-=========================================================
 
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
 
 import { useEffect } from "react";
 
@@ -190,7 +177,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           </MDTypography>
         </MDBox>
         <MDBox component={NavLink} to="/" display="flex" alignItems="center">
-          {brand && <MDBox component="img" src={brand} alt="Brand" width="2rem" />}
+          {brand && <MDBox component="img" src={brand} alt="Brand" width="4rem" />}
           <MDBox
             width={!brandName && "100%"}
             sx={(theme) => sidenavLogoLabel(theme, { miniSidenav })}
@@ -210,7 +197,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       <List>
         <MDBox display="flex flex-col" alignItems="center">
           <MDTypography color={textColor} variant="body2" fontWeight="medium" pl="1.5rem">
-            Examples
+            {/* Examples */}
           </MDTypography>
           {renderExampleRoutes}
         </MDBox>
@@ -222,7 +209,8 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
         ></Divider>
         {renderRoutes}
       </List>
-      Daily Sales    </SidenavRoot>
+      {/* Daily Sales     */}
+      </SidenavRoot>
   );
 }
 

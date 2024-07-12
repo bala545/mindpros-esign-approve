@@ -1,17 +1,4 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.1.0
-=========================================================
 
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
 
 import { useState } from "react";
 
@@ -124,7 +111,7 @@ function Notifications() {
                 <MDAlert color="primary" dismissible>
                   {alertContent("primary")}
                 </MDAlert>
-                <MDAlert color="secondary" dismissible>
+                {/* <MDAlert color="secondary" dismissible>
                   {alertContent("secondary")}
                 </MDAlert>
                 <MDAlert color="success" dismissible>
@@ -144,7 +131,7 @@ function Notifications() {
                 </MDAlert>
                 <MDAlert color="dark" dismissible>
                   {alertContent("dark")}
-                </MDAlert>
+                </MDAlert> */}
               </MDBox>
             </Card>
           </Grid>
@@ -165,7 +152,7 @@ function Notifications() {
                     </MDButton>
                     {renderSuccessSB}
                   </Grid>
-                  <Grid item xs={12} sm={6} lg={3}>
+                  {/* <Grid item xs={12} sm={6} lg={3}>
                     <MDButton variant="gradient" color="info" onClick={openInfoSB} fullWidth>
                       info notification
                     </MDButton>
@@ -182,7 +169,7 @@ function Notifications() {
                       error notification
                     </MDButton>
                     {renderErrorSB}
-                  </Grid>
+                  </Grid> */}
                 </Grid>
               </MDBox>
             </Card>
