@@ -12,7 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import DrawIcon from '@mui/icons-material/Draw';
 import CancelIcon from '@mui/icons-material/Cancel';
 
-export default function approvalData() {
+export default function approvalData(handleOpenApprove, handleOpenReject, hideActionColumn) {
   const [approveData, setApproveData] = useState(null);
   const data = useMemo(() => getDetails(), []); 
   useEffect(() => {
@@ -24,18 +24,25 @@ export default function approvalData() {
   const taskThree = approveData?.route?.taskGroups[0]?.tasks[2];
   const taskFour = approveData?.route?.taskGroups[0]?.tasks[3];
 
+  
+  const [isApproveorReject, setIsApproveorReject] = useState(false);
+  const [isApproveorRejectOne, setIsApproveorRejectOne] = useState(false);
+  const [isApproveorRejectt, setIsApproveorRejectt] = useState(false);
+  const [isApproveorRejectf, setIsApproveorRejectf] = useState(false);
+
+
   const removeTags = (text) => {
     if (!text) return text;
     return text.replace(/<p>/g, '').replace(/<\/p>/g, '');
   };
 
-  const handleOpenApprove = () => {
-    // handle approve action
-  };
+  // const handleOpenApprove = () => {
+    
+  // };
   
-  const handleOpenReject = () => {
-    // handle reject action
-  };
+  // const handleOpenReject = () => {
+  //   // handle reject action
+  // };
 
   const Author = ({ image, name, reviewer }) => (
     <MDBox display="flex" alignItems="center" lineHeight={1}>
@@ -121,7 +128,7 @@ export default function approvalData() {
             {taskOne?.timestamp}
           </MDTypography>
         ),
-        action:  (
+        action:  !hideActionColumn && (
           <MDBox>
           <IconButton
           size="large"
@@ -173,7 +180,7 @@ export default function approvalData() {
             {taskTwo?.timestamp}
           </MDTypography>
         ),
-        action:   (
+        action:  hideActionColumn && (
           <MDBox>
           <IconButton
           size="large"
@@ -226,7 +233,7 @@ export default function approvalData() {
           </MDTypography>
         ),
         action:   (
-          <MDBox>
+          isApproveorReject ?  (<MDBox>
           <IconButton
           size="large"
           aria-label="approve"
@@ -254,7 +261,7 @@ export default function approvalData() {
             Reject
           </Typography>
         </IconButton>
-        </MDBox>),
+        </MDBox>):null),
       },
       {
         approvaltask: (
@@ -277,7 +284,7 @@ export default function approvalData() {
             {taskFour?.timestamp}
           </MDTypography>
         ),
-        action:  (
+        action: hideActionColumn && (
           <MDBox>
           <IconButton
           size="large"

@@ -21,7 +21,8 @@ import { useTheme } from '@mui/material/styles';
 import DrawIcon from '@mui/icons-material/Draw';
 import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
-import ApproveRejectDialog from '../../layouts/billing/components/ApproveReject'
+import ApproveRejectDialog from '../../layouts/billing/components/ApproveReject';
+import MDAlert from "components/MDAlert";
 
 function Billing() {
   const location = useLocation();
@@ -29,21 +30,61 @@ function Billing() {
   console.log(rowData);
   const [openApprove, setOpenApprove] = useState(false);
   const [openReject, setOpenReject] = useState(false);
+  const [isApproved,setIsApproved] = useState(false);
+  const [isRejected,setIsRejected] = useState(false);
+  const [hideActionColumn, setHideActionColumn] = useState(false);
 
   const handleOpenApprove = () => {
     setOpenApprove(true);
+    setIsApproved(false);
+    callApi();
   };
+  
+    const [response, setResponse] = useState(null);
+    const [error, setError] = useState(null);
+
+    const callApi = async () => {
+      try {
+        const res = await fetch('http://localhost:3000/saveapprovalqueue',{
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+          },
+          body: JSON.stringify({
+            Record_ID: "New",
+            Record_Type: "MindPros_esign",
+            Record_Name: 'Test',
+            Approval_Task: "minf",
+            Status: 'Completed',
+            Reviewer: 'Bala',
+            Updated_Date: ''
+          }),
+        });
+        if (!res.ok) {
+          throw new Error(`Error: ${res.status} ${res.statusText}`);
+        }
+        const data = await res.json();
+        setResponse(data);
+      } catch (error) {
+        setError(error.message);
+      }
+    }
 
   const handleCloseApprove = () => {
     setOpenApprove(false);
+    setIsApproved(true);
+    setHideActionColumn(true);
   };
 
   const handleOpenReject = () => {
     setOpenReject(true);
+    setIsRejected(false);
   };
 
   const handleCloseReject = () => {
     setOpenReject(false);
+    setIsRejected(true);
+    setHideActionColumn(true);
   };
   const mindprosDetails = [
     { label: "System", value: rowData?.System },
@@ -93,13 +134,27 @@ function Billing() {
     document.body.removeChild(input);
   };
 
-  const { columns: approvalColumns, rows: approvalRows } = approvalData();
+  const { columns: approvalColumns, rows: approvalRows } = approvalData(handleOpenApprove, handleOpenReject, hideActionColumn);
   const { columns: stepsColumns, rows: stepsRows } = stepsData();
 
   return (
     <DashboardLayout>
+ 
       <DashboardNavbar absolute isMini />
+
       <MDBox pt={10} pb={3}>
+      <MDBox pt={0} pb={3}>
+      {isApproved && (<MDAlert color="success" dismissible>
+            <MDTypography variant="body2" color="white" fontWeight="medium">
+      Approved
+        </MDTypography>
+                </MDAlert>)}
+                {isRejected && (<MDAlert color="error" dismissible>
+                  <MDTypography variant="body2" color="white" fontWeight="medium">
+      Rejected
+        </MDTypography>
+                </MDAlert>)}
+      </MDBox>
         <Grid container spacing={6}>
           <Grid item xs={12}>
             <Card>

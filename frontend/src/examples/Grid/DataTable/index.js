@@ -24,6 +24,7 @@ import CustomButtonComponent from "./customButtonComponent.js";
 import '@ag-grid-community/styles/ag-grid.css'; // Core CSS
 import '@ag-grid-community/styles/ag-theme-quartz.css';
 import { Button } from '@mui/base/Button';
+import axios from 'axios';
 import { debounce } from 'lodash';
 import { useEvent } from '../../../useEvent';
 // import { isApprovalQueueClicked } from '../../../App';
@@ -60,9 +61,22 @@ const DataGrid = ({onParentAQ}) => {
     const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
     const [rowData, setRowData] = useState([]);
     const data = useMemo(() => getData(), []); 
+    const fetchRecords = async () => {
+        try {
+            const response = await axios.get('http://localhost:3000/getrecords');
+            setRowData(response.data);
+        } catch (error) {
+            console.error('Error fetching records:', error);
+        }
+    };
+
     useEffect(() => {
-        setRowData(data);
-    }, [data]);
+        fetchRecords();
+    }, []);
+
+    // useEffect(() => {
+    //     setRowData(data);
+    // }, [data]);
     const handleAQRow = () => {
         onParentAQ();
     };
@@ -192,13 +206,13 @@ const DataGrid = ({onParentAQ}) => {
                     }
                 },
             },
-            { field: 'Record Type', 
+            { field: 'Record_Type', 
                 headerName: 'Record Type',
                 filter: 'agTextColumnFilter',
                 flex: 1,
                 suppressHeaderFilterButton: true 
             },
-            { field: 'Record Name',
+            { field: 'Record_Name',
               headerName: 'Record Name',
                 filter: 'agTextColumnFilter',
                 menuTabs: ['filterMenuTab'],
@@ -223,7 +237,7 @@ const DataGrid = ({onParentAQ}) => {
                     }
                 },
             },
-            { field: 'ApprovalTask',
+            { field: 'Approval_Status',
                 headerName: 'Approval Task', 
                 tooltipField: 'Approval Task',
                 flex: 1,

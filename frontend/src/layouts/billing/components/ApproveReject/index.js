@@ -22,8 +22,8 @@ const ApproveRejectDialog = ({ openApprove, openReject, handleCloseApprove, hand
   };
 
   const handleRejectSubmit = () => {
-    window.alert(`Rejected with reason: ${rejectReason}`);
-    setOpenReject(false);
+    // window.alert(`Rejected with reason: ${rejectReason}`);
+    // setOpenReject(false);
   };
 
   const theme = useTheme();
@@ -97,7 +97,8 @@ const ApproveRejectDialog = ({ openApprove, openReject, handleCloseApprove, hand
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleRejectSubmit} style={{ color: 'linear-gradient(195deg, #49a3f1, #1A73E8)' }}>Submit</Button>
+          {/* <Button onClick={handleRejectSubmit} style={{ color: 'linear-gradient(195deg, #49a3f1, #1A73E8)' }}>Submit</Button> */}
+          <Button onClick={handleCloseReject} style={{ color: 'linear-gradient(195deg, #49a3f1, #1A73E8)' }}>Submit</Button>
           <Button onClick={handleCloseReject}>Cancel</Button>
         </DialogActions>
       </Dialog>
