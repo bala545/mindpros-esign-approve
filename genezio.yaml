@@ -1,0 +1,9 @@
+frontend:
+    path: ./
+    publish: ""
+    scripts:
+        build: ""
+        deploy: npm install
+name: mindpros-esign-approve
+region: us-east-1
+yamlVersion: 2
