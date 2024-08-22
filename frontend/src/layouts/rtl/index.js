@@ -3,10 +3,10 @@ import { useEffect } from "react";
 // @mui material components
 import Grid from "@mui/material/Grid";
 
-// Material Dashboard 2 React components
+// MINDPROS React components
 import MDBox from "components/MDBox";
 
-// Material Dashboard 2 React example components
+// MINDPROS React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
@@ -18,7 +18,7 @@ import reportsLineChartData from "layouts/rtl/data/reportsLineChartData";
 // RTL components
 import activityData from "layouts/user-management/activityData";
 
-// Material Dashboard 2 React contexts
+// MINDPROS React contexts
 import { useMaterialUIController, setDirection } from "context";
 import DataTable from "examples/Tables/DataTable";
 import Card from "@mui/material/Card";

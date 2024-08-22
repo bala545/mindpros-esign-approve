@@ -184,6 +184,14 @@ export default function App() {
   const initialRoutes = [
     {
       type: "collapse",
+      name: "Sign In",
+      key: "sign-in",
+      icon: <Icon fontSize="small">login</Icon>,
+      route: "/authentication/sign-in",
+      component: <SignIn />,
+    },
+    {
+      type: "collapse",
       name: "Dashboard",
       key: "dashboard",
       icon: <Icon fontSize="small">dashboard</Icon>,
@@ -235,7 +243,7 @@ export default function App() {
                 <Sidenav
                   color={sidenavColor}
                   brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-                  brandName="Material Dashboard 2"
+                  brandName="MINDPROS"
                   routes={[...initialRoutes, ...dynamicRoutes]}
                   onMouseEnter={handleOnMouseEnter}
                   onMouseLeave={handleOnMouseLeave}
@@ -273,7 +281,7 @@ export default function App() {
           <Routes>
             {getRoutes(initialRoutes)}
             {getRoutes(dynamicRoutes)}
-            <Route path="*" element={<Navigate to="/dashboard" />} />
+            <Route path="*" element={<Navigate to="/authentication/sign-in" />} />
           </Routes>
         </ThemeProvider>
       )}

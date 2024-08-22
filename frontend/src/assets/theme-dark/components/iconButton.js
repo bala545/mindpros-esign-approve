@@ -1,6 +1,6 @@
 
 
-// Material Dashboard 2 React Base Styles
+// MINDPROS React Base Styles
 import colors from "assets/theme-dark/base/colors";
 
 const { transparent } = colors;

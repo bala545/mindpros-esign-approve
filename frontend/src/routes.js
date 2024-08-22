@@ -1,5 +1,5 @@
 
-// Material Dashboard 2 React layouts
+// MINDPROS React layouts
 import Dashboard from "layouts/dashboard";
 import Tables from "layouts/tables";
 import Grids from "layouts/grid";
@@ -78,14 +78,14 @@ const routes = [
     route: "/profile",
     component: <Profile />,
   },
-  // {
-  //   type: "collapse",
-  //   name: "Sign In",
-  //   key: "sign-in",
-  //   icon: <Icon fontSize="small">login</Icon>,
-  //   route: "/authentication/sign-in",
-  //   component: <SignIn />,
-  // },
+  {
+    type: "collapse",
+    name: "Sign In",
+    key: "sign-in",
+    icon: <Icon fontSize="small">login</Icon>,
+    route: "/authentication/sign-in",
+    component: <SignIn />,
+  },
   {
     type: "examples",
     name: "User Profile",

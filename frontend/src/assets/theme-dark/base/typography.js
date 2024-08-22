@@ -1,15 +1,15 @@
 
 
 /**
- * The base typography styles for the Material Dashboard 2 PRO React.
+ * The base typography styles for the MINDPROS PRO React.
  * You can add new typography style using this file.
- * You can customized the typography styles for the entire Material Dashboard 2 PRO React using thie file.
+ * You can customized the typography styles for the entire MINDPROS PRO React using thie file.
  */
 
-// Material Dashboard 2 React Base Styles
+// MINDPROS React Base Styles
 import colors from "assets/theme-dark/base/colors";
 
-// Material Dashboard 2 React Helper Functions
+// MINDPROS React Helper Functions
 import pxToRem from "assets/theme-dark/functions/pxToRem";
 
 const { white } = colors;

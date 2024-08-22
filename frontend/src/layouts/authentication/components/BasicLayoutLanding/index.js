@@ -6,10 +6,10 @@ import PropTypes from "prop-types";
 // @mui material components
 import Grid from "@mui/material/Grid";
 
-// Material Dashboard 2 React components
+// MINDPROS React components
 import MDBox from "components/MDBox";
 
-// Material Dashboard 2 React example components
+// MINDPROS React example components
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 import PageLayout from "examples/LayoutContainers/PageLayout";
 
@@ -23,12 +23,7 @@ function BasicLayout({ image, children }) {
   return (
     <PageLayout>
       <DefaultNavbar
-        action={{
-          type: "external",
-          route: "https://creative-tim.com/product/material-dashboard-react-nodejs",
-          label: "free download",
-          color: "dark",
-        }}
+ 
       />
       <MDBox
         sx={{ height: "auto", minHeight: "100vh" }}

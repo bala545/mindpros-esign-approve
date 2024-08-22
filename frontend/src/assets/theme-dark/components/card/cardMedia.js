@@ -1,9 +1,9 @@
 
 
-// Material Dashboard 2 React Base Styles
+// MINDPROS React Base Styles
 import borders from "assets/theme-dark/base/borders";
 
-// Material Dashboard 2 React Helper Functions
+// MINDPROS React Helper Functions
 import pxToRem from "assets/theme-dark/functions/pxToRem";
 
 const { borderRadius } = borders;

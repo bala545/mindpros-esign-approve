@@ -11,7 +11,7 @@ import { createContext, useContext, useReducer, useMemo, useState, useEffect } f
 import PropTypes from "prop-types";
 import { useLocation, useNavigate } from "react-router-dom";
 
-// Material Dashboard 2 React main context
+// MINDPROS React main context
 const MaterialUI = createContext();
 
 // authentication context
@@ -23,7 +23,7 @@ export const AuthContext = createContext({
 });
 
 const AuthContextProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -47,8 +47,8 @@ const AuthContextProvider = ({ children }) => {
   const login = (token) => {
     localStorage.setItem("token", token);
     setIsAuthenticated(true);
-    // navigate("/auth/login");
-    navigate("/dashboard");
+    navigate("/auth/login");
+    //navigate("/dashboard");
   };
 
   const logout = () => {
@@ -67,7 +67,7 @@ const AuthContextProvider = ({ children }) => {
 // Setting custom name for the context which is visible on react dev tools
 MaterialUI.displayName = "MaterialUIContext";
 
-// Material Dashboard 2 React reducer
+// MINDPROS React reducer
 function reducer(state, action) {
   switch (action.type) {
     case "MINI_SIDENAV": {
@@ -106,7 +106,7 @@ function reducer(state, action) {
   }
 }
 
-// Material Dashboard 2 React context provider
+// MINDPROS React context provider
 function MaterialUIControllerProvider({ children }) {
   const initialState = {
     miniSidenav: false,
@@ -128,7 +128,7 @@ function MaterialUIControllerProvider({ children }) {
   return <MaterialUI.Provider value={value}>{children}</MaterialUI.Provider>;
 }
 
-// Material Dashboard 2 React custom hook for using context
+// MINDPROS React custom hook for using context
 function useMaterialUIController() {
   const context = useContext(MaterialUI);
 

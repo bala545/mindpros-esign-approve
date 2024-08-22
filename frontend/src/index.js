@@ -6,7 +6,7 @@ import { AuthContextProvider } from "context";
 import { EventProvider } from './useEvent'; 
 
 
-// Material Dashboard 2 React Context Provider
+// MINDPROS React Context Provider
 import { MaterialUIControllerProvider } from "context";
 
 const rootElement = document.getElementById("root");

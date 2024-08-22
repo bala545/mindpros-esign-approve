@@ -1,6 +1,6 @@
 
 
-// Material Dashboard 2 React helper functions
+// MINDPROS React helper functions
 import pxToRem from "assets/theme-dark/functions/pxToRem";
 
 const step = {

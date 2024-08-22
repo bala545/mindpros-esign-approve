@@ -6,10 +6,10 @@ import PropTypes from "prop-types";
 // @mui material components
 import Menu from "@mui/material/Menu";
 
-// Material Dashboard 2 React components
+// MINDPROS React components
 import MDBox from "components/MDBox";
 
-// Material Dashboard 2 React example components
+// MINDPROS React example components
 import DefaultNavbarLink from "examples/Navbars/DefaultNavbar/DefaultNavbarLink";
 import { useContext } from "react";
 import { AuthContext } from "context";
@@ -34,12 +34,12 @@ function DefaultNavbarMobile({ open, close }) {
       onClose={close}
       MenuListProps={{ style: { width: `calc(${width}px - 4rem)` } }}
     >
-      {/* {!authContext.isAuthenticated && (
+      {!authContext.isAuthenticated && (
         <MDBox px={0.5}>
           <DefaultNavbarLink icon="account_circle" name="register" route="/auth/register" />
           <DefaultNavbarLink icon="key" name="login" route="/auth/login" />
         </MDBox>
-      )} */}
+      )}
       {(
         <MDBox px={0.5}>
           <DefaultNavbarLink icon="donut_large" name="dashboard" route="/dashboard" />

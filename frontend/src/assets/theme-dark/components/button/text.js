@@ -1,10 +1,10 @@
 
 
-// Material Dashboard 2 React Base Styles
+// MINDPROS React Base Styles
 import colors from "assets/theme-dark/base/colors";
 import typography from "assets/theme-dark/base/typography";
 
-// Material Dashboard 2 React Helper Functions
+// MINDPROS React Helper Functions
 import pxToRem from "assets/theme-dark/functions/pxToRem";
 
 const { text, info, secondary, transparent } = colors;

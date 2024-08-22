@@ -1,9 +1,9 @@
 
 
-// Material Dashboard 2 React base styles
+// MINDPROS React base styles
 import colors from "assets/theme/base/colors";
 
-// Material Dashboard 2 React helper functions
+// MINDPROS React helper functions
 import rgba from "assets/theme/functions/rgba";
 
 const { info, white, gradients } = colors;

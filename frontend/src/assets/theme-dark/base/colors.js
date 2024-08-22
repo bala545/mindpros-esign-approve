@@ -1,9 +1,9 @@
 
 
 /**
- * The base colors for the Material Dashboard 2 PRO React.
+ * The base colors for the MINDPROS PRO React.
  * You can add new color using this file.
- * You can customized the colors for the entire Material Dashboard 2 PRO React using thie file.
+ * You can customized the colors for the entire MINDPROS PRO React using thie file.
  */
 
 const colors = {

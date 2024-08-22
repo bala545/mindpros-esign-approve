@@ -5,7 +5,7 @@ import Card from "@mui/material/Card";
 // import Divider from "@mui/material/Divider";
 import Icon from "@mui/material/Icon";
 
-// Material Dashboard 2 React components
+// MINDPROS React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 // import MDButton from "components/MDButton";
@@ -90,7 +90,7 @@ function Transactions() {
           <Transaction
             color="success"
             icon="expand_less"
-            name="Creative Tim"
+            name="MINDPROS"
             description="26 March 2020, at 08:30 AM"
             value="+ $ 2,500"
           />
