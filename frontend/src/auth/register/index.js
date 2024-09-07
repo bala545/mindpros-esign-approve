@@ -48,6 +48,34 @@ function Register() {
     });
   };
 
+  // const submitHandler = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const response = await fetch('http://localhost:5000/api/auth/register', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ username, full_name: fullName, password }),
+  //     });
+
+  //     const data = await response.json();
+  //     if (data.token) {
+  //       // Save token and redirect to dashboard
+  //       login(username, password);  // Use the login function to set the authToken
+  //     } else {
+  //       setError('Registration failed.');
+  //     }
+  //   } catch (err) {
+  //     setError('Registration failed. Please try again.');
+  //   }
+  // };
+
+  // If the user is authenticated, redirect to the dashboard
+  if (authToken) {
+    return <Navigate to="/dashboard" />;
+  }
+
   const submitHandler = async (e) => {
     e.preventDefault();
 

@@ -87,6 +87,14 @@ const routes = [
     component: <SignIn />,
   },
   {
+    type: "collapse",
+    name: "Sign Up",
+    key: "sign-up",
+    icon: <Icon fontSize="small">Sign Up</Icon>,
+    route: "/authentication/sign-up",
+    component: <SignUp />,
+  },
+  {
     type: "examples",
     name: "User Profile",
     key: "user-profile",

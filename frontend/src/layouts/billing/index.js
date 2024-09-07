@@ -37,38 +37,69 @@ function Billing() {
   const handleOpenApprove = () => {
     setOpenApprove(true);
     setIsApproved(false);
-    callApi();
+    handleSave();
   };
   
     const [response, setResponse] = useState(null);
     const [error, setError] = useState(null);
 
-    const callApi = async () => {
+    const handleSave = async () => {
+      const data = {
+        Record_ID: "0553b4af-aebb-45cf-9b34-2beaf9fc9ee3",
+        Record_Type: "MindPros_esign",
+        Record_Name: 'Test1',
+        Approval_Task: "minf",
+        Status: 'Completed',
+        Reviewer: 'Bala',
+        Updated_Date: new Date()
+      };
+  
       try {
-        const res = await fetch('http://localhost:3000/saveapprovalqueue',{
+        const res = await fetch('http://localhost:3000/saveapprovalqueue', {
           method: 'POST',
           headers: {
-            'content-type': 'application/json',
+            'Content-Type': 'application/json'
           },
-          body: JSON.stringify({
-            Record_ID: "New",
-            Record_Type: "MindPros_esign",
-            Record_Name: 'Test',
-            Approval_Task: "minf",
-            Status: 'Completed',
-            Reviewer: 'Bala',
-            Updated_Date: ''
-          }),
+          body: JSON.stringify(data)
         });
-        if (!res.ok) {
-          throw new Error(`Error: ${res.status} ${res.statusText}`);
+  
+        if (res.ok) {
+          const result = await res.json();
+          setResponse(result);
+        } else {
+          throw new Error('Failed to save data');
         }
-        const data = await res.json();
-        setResponse(data);
       } catch (error) {
-        setError(error.message);
+        console.error('Error:', error);
       }
-    }
+    };
+
+    // const callApi = async () => {
+    //   try {
+    //     const res = await fetch('http://localhost:3000/saveapprovalqueue',{
+    //       method: 'POST',
+    //       headers: {
+    //         'content-type': 'application/json',
+    //       },
+    //       body: JSON.stringify({
+    //         Record_ID: "New",
+    //         Record_Type: "MindPros_esign",
+    //         Record_Name: 'Test',
+    //         Approval_Task: "minf",
+    //         Status: 'Completed',
+    //         Reviewer: 'Bala',
+    //         Updated_Date: ''
+    //       }),
+    //     });
+    //     if (!res.ok) {
+    //       throw new Error(`Error: ${res.status} ${res.statusText}`);
+    //     }
+    //     const data = await res.json();
+    //     setResponse(data);
+    //   } catch (error) {
+    //     setError(error.message);
+    //   }
+    // }
 
   const handleCloseApprove = () => {
     setOpenApprove(false);
@@ -143,18 +174,23 @@ function Billing() {
       <DashboardNavbar absolute isMini />
 
       <MDBox pt={10} pb={3}>
-      <MDBox pt={0} pb={3}>
-      {isApproved && (<MDAlert color="success" dismissible>
-            <MDTypography variant="body2" color="white" fontWeight="medium">
-      Approved
-        </MDTypography>
-                </MDAlert>)}
-                {isRejected && (<MDAlert color="error" dismissible>
-                  <MDTypography variant="body2" color="white" fontWeight="medium">
-      Rejected
-        </MDTypography>
-                </MDAlert>)}
-      </MDBox>
+        <MDBox pt={0} pb={3}>
+          {isApproved && (
+            <MDAlert color="success" dismissible sx={{ maxWidth: "124rem", marginLeft: "2rem" }}>
+              <MDTypography variant="body2" color="white" fontWeight="medium">
+                Approved
+              </MDTypography>
+            </MDAlert>
+          )}
+          {isRejected && (
+            <MDAlert color="error" dismissible sx={{ maxWidth: "124rem", marginLeft: "2rem" }}>
+              <MDTypography variant="body2" color="white" fontWeight="medium">
+                Rejected
+              </MDTypography>
+            </MDAlert>
+          )}
+        </MDBox>
+
         <Grid container spacing={6}>
           <Grid item xs={12}>
             <Card>

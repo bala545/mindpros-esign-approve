@@ -117,8 +117,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
   });
 
   const handleLogOut = async () => {
-    const response = await AuthService.logout();
-    authContext.logout();
+    // const response = await AuthService.logout();
+    // authContext.logout();
+    navigate("/authentication/sign-in");
   };
 
   return (

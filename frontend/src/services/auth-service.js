@@ -10,7 +10,7 @@ class AuthService {
   
 
   register = async (credentials) => {
-    const registerEndpoint = 'register';
+    const registerEndpoint = 'http://localhost:3000/api/auth/register';
     return await HttpService.post(registerEndpoint, credentials);
   };
 

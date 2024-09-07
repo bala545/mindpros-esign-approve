@@ -4,10 +4,14 @@ const { Pool } = require('pg');
 const cors = require('cors');
 const app = express();
 const port = 3000;
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 app.use(cors());
 app.use(bodyParser.json());
 
 // PostgreSQL connection pool 
+const JWT_SECRET = crypto.randomBytes(64).toString('hex');
 
 const pool = new Pool({
   user: 'postgres',
@@ -18,6 +22,72 @@ const pool = new Pool({
 });
 
 
+//login
+
+app.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    // Query the user by email
+    const userQuery = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+    
+    if (userQuery.rows.length === 0) {
+      // If user not found, return an error
+      return res.status(400).json({ message: 'Incorrect credentials.' });
+    }
+
+    const user = userQuery.rows[0];
+
+    // Compare the password with the hashed password in the database
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Incorrect credentials.' });
+    }
+
+    // Generate JWT
+    const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '1h' });
+
+    // Return the token to the client
+    res.json({ token });
+
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+});
+
+
+
+app.post('/register', async (req, res) => {
+  const { username, full_name, password } = req.body;
+
+  try {
+    // Check if the username already exists
+    const userExists = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
+    if (userExists.rows.length > 0) {
+      return res.status(400).json({ msg: 'Username already exists' });
+    }
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Insert the new user into the database
+    const newUser = await pool.query(
+      'INSERT INTO users (username, full_name, password) VALUES ($1, $2, $3) RETURNING *',
+      [username, full_name, hashedPassword]
+    );
+
+    // Generate JWT token
+    const token = jwt.sign({ id: newUser.rows[0].id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+    // Return the token to the client
+    res.status(201).json({ token });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+});
 
 // Create a new user
 app.post('/users', async (req, res) => {

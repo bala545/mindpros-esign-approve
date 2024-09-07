@@ -184,11 +184,19 @@ export default function App() {
   const initialRoutes = [
     {
       type: "collapse",
-      name: "Sign In",
+      name: "",
       key: "sign-in",
-      icon: <Icon fontSize="small">login</Icon>,
+      icon: <Icon fontSize="small"></Icon>,
       route: "/authentication/sign-in",
       component: <SignIn />,
+    },
+    {
+      type: "collapse",
+      name: "",
+      key: "sign-up",
+      icon: <Icon fontSize="small"></Icon>,
+      route: "/authentication/sign-up",
+      component: <SignUp />,
     },
     {
       type: "collapse",

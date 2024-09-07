@@ -3,10 +3,10 @@
 * MINDPROS PRO React - v1.0.0
 =========================================================
 
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-pro-react
-* Copyright 2021 MINDPROS (https://www.creative-tim.com)
+* Product Page: product/soft-ui-dashboard-pro-react
+* Copyright 2021 MINDPROS (https://www.)
 
-Coded by www.creative-tim.com
+Coded by www.
 
 =========================================================
 

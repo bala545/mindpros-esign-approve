@@ -36,12 +36,16 @@ export default function approvalData(handleOpenApprove, handleOpenReject, hideAc
     return text.replace(/<p>/g, '').replace(/<\/p>/g, '');
   };
 
-  // const handleOpenApprove = () => {
-    
+  // const handleOpenApprove = (task) => {
+  //   task.status = 'Approved';
+  //   // handleTaskUpdate(task.status); 
+  //   setApproveData({ ...approveData });
   // };
-  
-  // const handleOpenReject = () => {
-  //   // handle reject action
+
+  // const handleOpenReject = (task) => {
+  //   task.status = 'Rejected';
+  //   // handleTaskUpdate(task.status); 
+  //   setApproveData({ ...approveData });
   // };
 
   const Author = ({ image, name, reviewer }) => (
