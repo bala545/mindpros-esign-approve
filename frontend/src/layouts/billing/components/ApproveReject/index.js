@@ -1,20 +1,7 @@
 import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPen, faTimes } from '@fortawesome/free-solid-svg-icons';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  TextField,
-  IconButton,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, useMediaQuery, useTheme } from '@mui/material';
 
-const ApproveRejectDialog = ({ openApprove, openReject, handleCloseApprove, handleCloseReject }) => {
+const ApproveRejectDialog = ({ openApprove, openReject, handleCloseApprove, handleCloseReject, rowData  }) => {
   const [rejectReason, setRejectReason] = useState('');
 
   const handleRejectReasonChange = (event) => {
@@ -22,18 +9,56 @@ const ApproveRejectDialog = ({ openApprove, openReject, handleCloseApprove, hand
   };
 
   const handleRejectSubmit = () => {
-    // window.alert(`Rejected with reason: ${rejectReason}`);
-    // setOpenReject(false);
+    console.log(`Rejected with reason: ${rejectReason}`);
+    handleCloseReject();  // Close the Reject dialog after submission
   };
 
+  // Log to debug if the function is called
+  const handleApproveSubmit = () => {
+    console.log("Approve Submit button clicked");
+    handleSave();
+    handleCloseApprove();
+  };
+  
+  const handleSave = async () => {
+    const data = {
+      Record_ID: rowData.Record_ID,
+      Record_Type: rowData.Record_Type,
+      Record_Name: rowData.Record_Name,
+      Approval_Task: rowData.Approval_Status,
+      Status: 'Completed',
+      Reviewer: rowData.Author,
+      Updated_Date: new Date()
+    };
+
+    try {
+      const res = await fetch('http://localhost:3000/saveapprovalqueue', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (res.ok) {
+        const result = await res.json();
+        setResponse(result);
+      } else {
+        throw new Error('Failed to save data');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <div>
+      {/* Approve Dialog */}
       <Dialog
         open={openApprove}
-        onClose={handleCloseApprove}
+        onClose={handleCloseApprove}  // Should close on backdrop click or Esc key
         fullScreen={fullScreen}
         maxWidth="md"
         fullWidth
@@ -43,7 +68,7 @@ const ApproveRejectDialog = ({ openApprove, openReject, handleCloseApprove, hand
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            I have reviewed the selected record and now apply my electronic signature with a meaning of Argus System Owner Approval
+            I have reviewed the selected record and now apply my electronic signature with a meaning of Argus System Owner Approval.
           </DialogContentText>
           <TextField
             autoFocus
@@ -65,11 +90,12 @@ const ApproveRejectDialog = ({ openApprove, openReject, handleCloseApprove, hand
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseApprove} style={{ color: 'linear-gradient(195deg, #49a3f1, #1A73E8)' }}>Submit</Button>
+          <Button onClick={handleApproveSubmit} style={{ color: 'linear-gradient(195deg, #49a3f1, #1A73E8)' }}>Submit</Button>
           <Button onClick={handleCloseApprove}>Cancel</Button>
         </DialogActions>
       </Dialog>
 
+      {/* Reject Dialog */}
       <Dialog
         open={openReject}
         onClose={handleCloseReject}
@@ -97,8 +123,7 @@ const ApproveRejectDialog = ({ openApprove, openReject, handleCloseApprove, hand
           />
         </DialogContent>
         <DialogActions>
-          {/* <Button onClick={handleRejectSubmit} style={{ color: 'linear-gradient(195deg, #49a3f1, #1A73E8)' }}>Submit</Button> */}
-          <Button onClick={handleCloseReject} style={{ color: 'linear-gradient(195deg, #49a3f1, #1A73E8)' }}>Submit</Button>
+          <Button onClick={handleRejectSubmit} style={{ color: 'linear-gradient(195deg, #49a3f1, #1A73E8)' }}>Submit</Button>
           <Button onClick={handleCloseReject}>Cancel</Button>
         </DialogActions>
       </Dialog>

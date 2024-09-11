@@ -105,7 +105,8 @@ app.post('/users', async (req, res) => {
 //save Approval Queue
 
 app.post('/saveapprovalqueue', async (req, res) => {
-    req.body = {Record_ID:"0553b4af-aebb-45cf-9b34-2beaf9fc9ee3",Record_Type:"MindPros_esign",Record_Name:'Test1',Approval_Task:"minf",Status:'Completed',Reviewer:'Bala', Updated_Date: new Date()};
+  debugger;
+    // req.body = {Record_ID:"0553b4af-aebb-45cf-9b34-2beaf9fc9ee3",Record_Type:"MindPros_esign",Record_Name:'Test1',Approval_Task:"minf",Status:'Completed',Reviewer:'Bala', Updated_Date: new Date()};
     const { Record_ID, Record_Type,Record_Name,Approval_Task,Status,Reviewer,Updated_Date} = req.body;
     try {
         const result = await pool.query('INSERT INTO "Approval_Route" ("Record_ID", "Record_Type", "Record_Name", "Approval_Task", "Status", "Reviewer", "Updated_Date") values ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
@@ -115,6 +116,38 @@ app.post('/saveapprovalqueue', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
+
+//get Approval Queue
+
+app.get('/getapprovalqueue', async (req, res) => {
+  const { Record_ID } = req.query;  // Assuming you want to filter by Record_ID
+  console.log('Record_ID:', Record_ID);
+  try {
+      let result;
+debugger;
+      // If Record_ID is provided, filter by it, otherwise fetch all records
+      if (Record_ID) {
+        result = await pool.query(`
+          SELECT "Record_ID", "Record_Type", "Record_Name", "Approval_Task", "Status", "Reviewer", "Updated_Date" 
+          FROM "Approval_Route" 
+          WHERE "Record_ID" = $1`, 
+          [Record_ID] // This is where the variable is passed
+        );
+      } else {
+          result = await pool.query('SELECT "Record_ID", "Record_Type", "Record_Name", "Approval_Task", "Status", "Reviewer", "Updated_Date" FROM "Approval_Route"');
+      }
+
+      if (result.rows.length === 0) {
+          return res.status(404).json({ message: "No records found" });
+      }
+
+      res.status(200).json(result.rows);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+});
+
 
 // get categories
 app.get('/getcategories', async (req, res) => {

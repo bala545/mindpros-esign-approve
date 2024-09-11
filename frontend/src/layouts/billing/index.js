@@ -37,7 +37,7 @@ function Billing() {
   const handleOpenApprove = () => {
     setOpenApprove(true);
     setIsApproved(false);
-    handleSave();
+    // handleSave();
   };
   
     const [response, setResponse] = useState(null);
@@ -165,7 +165,7 @@ function Billing() {
     document.body.removeChild(input);
   };
 
-  const { columns: approvalColumns, rows: approvalRows } = approvalData(handleOpenApprove, handleOpenReject, hideActionColumn);
+  const { columns: approvalColumns, rows: approvalRows } = approvalData(handleOpenApprove, handleOpenReject, hideActionColumn, rowData);
   const { columns: stepsColumns, rows: stepsRows } = stepsData();
 
   return (
@@ -421,6 +421,7 @@ function Billing() {
         openReject={openReject}
         handleCloseApprove={handleCloseApprove}
         handleCloseReject={handleCloseReject}
+        rowData={rowData}
       />
     </DashboardLayout>
   );

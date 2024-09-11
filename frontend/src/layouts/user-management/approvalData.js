@@ -11,95 +11,57 @@ import { getDetails } from './detailsAQ';
 import IconButton from '@mui/material/IconButton';
 import DrawIcon from '@mui/icons-material/Draw';
 import CancelIcon from '@mui/icons-material/Cancel';
+import axios from 'axios';
 
-export default function approvalData(handleOpenApprove, handleOpenReject, hideActionColumn) {
-  const [approveData, setApproveData] = useState(null);
-  const data = useMemo(() => getDetails(), []); 
-  useEffect(() => {
-    setApproveData(data);
-  }, [data]);
+export default function approvalData(handleOpenApprove, handleOpenReject, hideActionColumn, rowData) {
+  const [approveData, setApproveData] = useState([]); // Initialize as an empty array to avoid undefined issues
 
-  const taskOne = approveData?.route?.taskGroups[0]?.tasks[0];
-  const taskTwo = approveData?.route?.taskGroups[0]?.tasks[1];
-  const taskThree = approveData?.route?.taskGroups[0]?.tasks[2];
-  const taskFour = approveData?.route?.taskGroups[0]?.tasks[3];
-
+  // Fetch approval data
+  const fetchApprovalData = async (recordId) => {
+    try {
+      let url = 'http://localhost:3000/getapprovalqueue';
   
-  const [isApproveorReject, setIsApproveorReject] = useState(false);
-  const [isApproveorRejectOne, setIsApproveorRejectOne] = useState(false);
-  const [isApproveorRejectt, setIsApproveorRejectt] = useState(false);
-  const [isApproveorRejectf, setIsApproveorRejectf] = useState(false);
+      // If recordId is provided, append it as a query parameter
+      if (recordId) {
+        url += `?Record_ID=${recordId}`;
+      }
+  
+      const res = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (!res.ok) {
+        throw new Error('Failed to fetch approval data');
+      }
+  
+      const data = await res.json();
+      setApproveData(data); // Update approveData with fetched data
+      console.log('Fetched data:', data);
+    } catch (error) {
+      console.error('Error fetching records:', error);
+    }
+  };
 
+  // Fetch data on component mount
+  useEffect(() => {
+    fetchApprovalData(rowData?.Record_ID);
+  }, [rowData?.Record_ID]); // Ensure the effect runs when Record_ID changes
+
+  // Safeguard in case approveData is still loading or empty
+  if (!approveData || approveData.length === 0) {
+    return {
+      columns: [],
+      rows: [],
+    };
+  }
 
   const removeTags = (text) => {
     if (!text) return text;
     return text.replace(/<p>/g, '').replace(/<\/p>/g, '');
   };
-
-  // const handleOpenApprove = (task) => {
-  //   task.status = 'Approved';
-  //   // handleTaskUpdate(task.status); 
-  //   setApproveData({ ...approveData });
-  // };
-
-  // const handleOpenReject = (task) => {
-  //   task.status = 'Rejected';
-  //   // handleTaskUpdate(task.status); 
-  //   setApproveData({ ...approveData });
-  // };
-
-  const Author = ({ image, name, reviewer }) => (
-    <MDBox display="flex" alignItems="center" lineHeight={1}>
-      <MDAvatar src={image} name={name} size="sm" />
-      <MDBox ml={2} lineHeight={1}>
-        <MDTypography display="block" variant="button" fontWeight="medium">
-          {name}
-        </MDTypography>
-        <MDTypography variant="caption">{reviewer}</MDTypography>
-      </MDBox>
-    </MDBox>
-  );
-
-  const Job = ({ title, description }) => (
-    <MDBox lineHeight={1} textAlign="left">
-      <MDTypography display="block" variant="caption" color="text" fontWeight="medium">
-        {title}
-      </MDTypography>
-      <MDTypography variant="caption">{description}</MDTypography>
-    </MDBox>
-  );
-
-  const actions = ({}) => (
-    <MDBox>
-    <IconButton
-    size="large"
-    aria-label="approve"
-    aria-controls="primary-search-account-menu"
-    aria-haspopup="true"
-    color="inherit"
-    onClick={handleOpenApprove}
-  >
-    <DrawIcon sx={{ color: 'green' }} />
-    <Typography variant="button" sx={{ marginLeft: '8px', color: 'green' }}>
-      Approve
-    </Typography>
-  </IconButton>
-  <IconButton
-    size="large"
-    aria-label="reject"
-    aria-controls="primary-search-account-menu"
-    aria-haspopup="true"
-    color="inherit"
-    style={{ borderRadius: "12px" }}
-    onClick={handleOpenReject}
-  >
-    <CancelIcon sx={{ color: 'red' }} />
-    <Typography variant="button" sx={{ marginLeft: '8px', color: 'red' }}>
-      Reject
-    </Typography>
-  </IconButton>
-  </MDBox>
-  );
 
   return {
     columns: [
@@ -110,215 +72,55 @@ export default function approvalData(handleOpenApprove, handleOpenReject, hideAc
       { Header: "action", accessor: "action", align: "center" },
     ],
 
-    rows: [
-      {
-        approvaltask: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            {removeTags(taskOne?.meaning)}
-          </MDTypography>
-        ),
-        status: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            {taskOne?.status}
-          </MDTypography>
-        ),
-        reviewer: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            {taskOne?.role}
-          </MDTypography>
-        ),
-        date: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            {taskOne?.timestamp}
-          </MDTypography>
-        ),
-        action:  !hideActionColumn && (
-          <MDBox>
+    rows: approveData.map((taskOne, index) => ({
+      approvaltask: (
+        <MDTypography key={`task-${index}`} variant="caption" color="text" fontWeight="medium">
+          {removeTags(taskOne?.Approval_Task)}
+        </MDTypography>
+      ),
+      status: (
+        <MDTypography key={`status-${index}`} variant="caption" color="text" fontWeight="medium">
+          {taskOne?.Status}
+        </MDTypography>
+      ),
+      reviewer: (
+        <MDTypography key={`reviewer-${index}`} variant="caption" color="text" fontWeight="medium">
+          {taskOne?.Reviewer}
+        </MDTypography>
+      ),
+      date: (
+        <MDTypography key={`date-${index}`} variant="caption" color="text" fontWeight="medium">
+          {new Date(taskOne?.Updated_Date).toLocaleDateString()} {/* Format date */}
+        </MDTypography>
+      ),
+      action:index == 0 && taskOne?.Status === "Pending" && !hideActionColumn && (
+        <MDBox key={`action-${index}`}>
           <IconButton
-          size="large"
-          aria-label="approve"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-          onClick={handleOpenApprove}
-        >
-          <DrawIcon sx={{ color: 'green' }} />
-          <Typography variant="button" sx={{ marginLeft: '8px', color: 'green' }}>
-            Approve
-          </Typography>
-        </IconButton>
-        <IconButton
-          size="large"
-          aria-label="reject"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-          style={{ borderRadius: "12px" }}
-          onClick={handleOpenReject}
-        >
-          <CancelIcon sx={{ color: 'red' }} />
-          <Typography variant="button" sx={{ marginLeft: '8px', color: 'red' }}>
-            Reject
-          </Typography>
-        </IconButton>
-        </MDBox>),
-      },
-      {
-        approvaltask: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            {removeTags(taskTwo?.meaning)}
-          </MDTypography>
-        ),
-        status: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            {taskTwo?.status}
-          </MDTypography>
-        ),
-        reviewer: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            {taskTwo?.reviewerName}
-          </MDTypography>
-        ),
-        date: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            {taskTwo?.timestamp}
-          </MDTypography>
-        ),
-        action:  hideActionColumn && (
-          <MDBox>
+            size="large"
+            aria-label="approve"
+            color="inherit"
+            onClick={handleOpenApprove}
+          >
+            <DrawIcon sx={{ color: 'green' }} />
+            <Typography variant="button" sx={{ marginLeft: '8px', color: 'green' }}>
+              Approve
+            </Typography>
+          </IconButton>
           <IconButton
-          size="large"
-          aria-label="approve"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-          onClick={handleOpenApprove}
-        >
-          <DrawIcon sx={{ color: 'green' }} />
-          <Typography variant="button" sx={{ marginLeft: '8px', color: 'green' }}>
-            Approve
-          </Typography>
-        </IconButton>
-        <IconButton
-          size="large"
-          aria-label="reject"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-          style={{ borderRadius: "12px" }}
-          onClick={handleOpenReject}
-        >
-          <CancelIcon sx={{ color: 'red' }} />
-          <Typography variant="button" sx={{ marginLeft: '8px', color: 'red' }}>
-            Reject
-          </Typography>
-        </IconButton>
-        </MDBox>),
-      },
-      {
-        approvaltask: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            {removeTags(taskThree?.meaning)}
-          </MDTypography>
-        ),
-        status: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            {taskThree?.status}
-          </MDTypography>
-        ),
-        reviewer: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            {taskThree?.role}
-          </MDTypography>
-        ),
-        date: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            {taskThree?.timestamp}
-          </MDTypography>
-        ),
-        action:   (
-          isApproveorReject ?  (<MDBox>
-          <IconButton
-          size="large"
-          aria-label="approve"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-          onClick={handleOpenApprove}
-        >
-          <DrawIcon sx={{ color: 'green' }} />
-          <Typography variant="button" sx={{ marginLeft: '8px', color: 'green' }}>
-            Approve
-          </Typography>
-        </IconButton>
-        <IconButton
-          size="large"
-          aria-label="reject"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-          style={{ borderRadius: "12px" }}
-          onClick={handleOpenReject}
-        >
-          <CancelIcon sx={{ color: 'red' }} />
-          <Typography variant="button" sx={{ marginLeft: '8px', color: 'red' }}>
-            Reject
-          </Typography>
-        </IconButton>
-        </MDBox>):null),
-      },
-      {
-        approvaltask: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            {removeTags(taskFour?.meaning)}
-          </MDTypography>
-        ),
-        status: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            {taskFour?.status}
-          </MDTypography>
-        ),
-        reviewer: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            {taskFour?.role}
-          </MDTypography>
-        ),
-        date: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            {taskFour?.timestamp}
-          </MDTypography>
-        ),
-        action: hideActionColumn && (
-          <MDBox>
-          <IconButton
-          size="large"
-          aria-label="approve"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-          onClick={handleOpenApprove}
-        >
-          <DrawIcon sx={{ color: 'green' }} />
-          <Typography variant="button" sx={{ marginLeft: '8px', color: 'green' }}>
-            Approve
-          </Typography>
-        </IconButton>
-        <IconButton
-          size="large"
-          aria-label="reject"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-          style={{ borderRadius: "12px" }}
-          onClick={handleOpenReject}
-        >
-          <CancelIcon sx={{ color: 'red' }} />
-          <Typography variant="button" sx={{ marginLeft: '8px', color: 'red' }}>
-            Reject
-          </Typography>
-        </IconButton>
-        </MDBox>),
-      },
-    ],
+            size="large"
+            aria-label="reject"
+            color="inherit"
+            style={{ borderRadius: "12px" }}
+            onClick={handleOpenReject}
+          >
+            <CancelIcon sx={{ color: 'red' }} />
+            <Typography variant="button" sx={{ marginLeft: '8px', color: 'red' }}>
+              Reject
+            </Typography>
+          </IconButton>
+        </MDBox>
+      ),
+    })),
   };
 }
+
