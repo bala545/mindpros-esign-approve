@@ -60,6 +60,7 @@ const DataGrid = ({onParentAQ}) => {
     const gridRef = useRef();
     const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
     const [rowData, setRowData] = useState([]);
+    const [loading, setLoading] = useState(true);
     const data = useMemo(() => getData(), []); 
     const fetchRecords = async () => {
         try {
@@ -67,6 +68,8 @@ const DataGrid = ({onParentAQ}) => {
             setRowData(response.data);
         } catch (error) {
             console.error('Error fetching records:', error);
+        } finally {
+            setLoading(false); 
         }
     };
 
@@ -409,6 +412,11 @@ const DataGrid = ({onParentAQ}) => {
                         }}>Reset Filters</Button>
                
                 </div>
+                {loading ? (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <div className="loader"></div>
+    </div>
+) : (
                 <div className="ag-theme-quartz" style={{ height: 800 }}>
                     <AgGridReact
                         ref={gridRef}
@@ -438,6 +446,7 @@ const DataGrid = ({onParentAQ}) => {
                     >
                     </AgGridReact>
                 </div>
+                )}
             </div>
             <div className="overlay" onClick={PullUpRO}>
             </div>
